@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat App</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+  <script>
+    // Connect to the server
+    const socket = io();
+
+    // Handle form submission
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const message = input.value;
+
+      // Send the message to the server
+      socket.emit('message', message);
+
+      input.value = ''; // Clear the input field
+    }
+
+    // Handle incoming messages
+    socket.on('message', (message) => {
+      const messageContainer = document.getElementById('messageContainer');
+      const newMessage = document.createElement('p');
+      newMessage.textContent = message;
+
+      // Display the message in the chat
+      messageContainer.appendChild(newMessage);
+    });
+
+    // Display a predefined message when the page loads
+    window.addEventListener('DOMContentLoaded', () => {
+      const predefinedMessage = 'Hello, everyone! Welcome to the chat.';
+      const messageContainer = document.getElementById('messageContainer');
+      const newMessage = document.createElement('p');
+      newMessage.textContent = predefinedMessage;
+
+      // Display the predefined message in the chat
+      messageContainer.appendChild(newMessage);
+    });
+  </script>
+</head>
+<body>
+  <h1>Chat App</h1>
+  <div id="messageContainer"></div>
+  <input type="text" id="messageInput" placeholder="We know where you are">
+  <button onclick="sendMessage()">Send</button>
+</body>
+</html>
